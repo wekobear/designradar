@@ -58,7 +58,15 @@ const ensured = new Set<string>();
 export async function getBoss(): Promise<PgBoss> {
   if (boss) return boss;
   starting ??= (async () => {
-    const b = new PgBoss({ connectionString: config.databaseUrl, max: 4, schema: "pgboss", application_name: "aihot-jobs" });
+    // Managed Postgres poolers (Supabase, Neon) present a private CA that node-postgres would
+    // verify; postgres.js ignores it for sslmode=require. PGSSL_NO_VERIFY levels the two.
+    const b = new PgBoss({
+      connectionString: config.databaseUrl,
+      ssl: process.env.PGSSL_NO_VERIFY === "true" ? { rejectUnauthorized: false } : undefined,
+      max: 4,
+      schema: "pgboss",
+      application_name: "aihot-jobs",
+    });
     b.on("error", (err) => console.error("[pg-boss]", err));
     try {
       await b.start();
