@@ -25,21 +25,20 @@ for (const [src, dest] of [
 
 const sharpVersion = JSON.parse(readFileSync(path.join(root, "node_modules/sharp/package.json"), "utf8")).version;
 const resvgVersion = JSON.parse(readFileSync(path.join(root, "node_modules/@resvg/resvg-js/package.json"), "utf8")).version;
-const staging = path.join(root, ".vercel/output/.linux-natives");
-rmSync(staging, { recursive: true, force: true });
+const funcModules = path.join(funcDir, "node_modules");
 // Functions may run on x64 or arm64 Lambdas; install the Linux (glibc) builds of both architectures.
+// A separate staging prefix per arch: a shared one would let the second install prune the first.
 for (const cpu of ["x64", "arm64"]) {
+  const staging = path.join(root, `.vercel/output/.linux-natives-${cpu}`);
+  rmSync(staging, { recursive: true, force: true });
   execSync(
     `npm install --prefix ${JSON.stringify(staging)} --os=linux --cpu=${cpu} --libc=glibc --no-audit --no-fund --no-save ` +
       `sharp@${sharpVersion} @resvg/resvg-js@${resvgVersion}`,
     { stdio: "inherit" },
   );
+  for (const dir of ["@img", "@resvg"]) {
+    cpSync(path.join(staging, "node_modules", dir), path.join(funcModules, dir), { recursive: true, dereference: true });
+  }
+  rmSync(staging, { recursive: true, force: true });
 }
-
-const funcModules = path.join(funcDir, "node_modules");
-for (const dir of ["@img", "@resvg"]) rmSync(path.join(funcModules, dir), { recursive: true, force: true });
-for (const dir of ["@img", "@resvg"]) {
-  cpSync(path.join(staging, "node_modules", dir), path.join(funcModules, dir), { recursive: true, dereference: true });
-  console.log(`vercel-postprocess: linux binaries (x64+arm64) -> node_modules/${dir}`);
-}
-rmSync(staging, { recursive: true, force: true });
+console.log("vercel-postprocess: linux binaries (x64+arm64) -> node_modules/@img, @resvg");

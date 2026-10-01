@@ -197113,7 +197113,13 @@ var init_dist14 = __esm({
 async function getBoss() {
   if (boss) return boss;
   starting ??= (async () => {
-    const b3 = new PgBoss({ connectionString: config.databaseUrl, max: 4, schema: "pgboss", application_name: "aihot-jobs" });
+    const b3 = new PgBoss({
+      connectionString: config.databaseUrl,
+      ssl: process.env.PGSSL_NO_VERIFY === "true" ? { rejectUnauthorized: false } : void 0,
+      max: 4,
+      schema: "pgboss",
+      application_name: "aihot-jobs"
+    });
     b3.on("error", (err2) => console.error("[pg-boss]", err2));
     try {
       await b3.start();
