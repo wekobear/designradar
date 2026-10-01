@@ -1,11 +1,13 @@
 // Post-processes .vercel/output after `vercel build` (run before `vercel deploy --prebuilt`).
-// `functions.includeFiles` is silently ignored for this project's Fluid functions, so the runtime
-// files the API bundle reads from REPO_ROOT must be copied into the function output by hand:
-// - industry/            prompts (read at module init), brand assets, taxonomy seeds
-// - assets/og-fonts/     satori fonts for OG image rendering
-// - node_modules/harfbuzzjs/  full package: its hb.wasm is loaded dynamically, so file tracing
-//                        ships only the JS entry and OG rendering would abort without it
-import { cpSync, existsSync, rmSync } from "node:fs";
+// - `functions.includeFiles` is silently ignored for this project's Fluid functions, so the runtime
+//   files the API bundle reads from REPO_ROOT are copied into the function output by hand:
+//   industry/ (prompts are read at module init, brand assets), assets/og-fonts (satori), and
+//   node_modules/harfbuzzjs (its hb.wasm is loaded dynamically, so file tracing ships only the JS
+//   entry and OG rendering would abort without it).
+// - The local build's node_modules carry the host platform's native binaries, but Functions run on
+//   linux-arm64, so the Linux builds of sharp and @resvg/resvg-js are installed and swapped in.
+import { execSync } from "node:child_process";
+import { cpSync, existsSync, readFileSync, rmSync } from "node:fs";
 import path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "..");
@@ -17,9 +19,24 @@ for (const [src, dest] of [
   ["assets/og-fonts", "assets/og-fonts"],
   ["node_modules/harfbuzzjs", "node_modules/harfbuzzjs"],
 ]) {
-  const from = path.join(root, src);
-  const to = path.join(funcDir, dest);
-  rmSync(to, { recursive: true, force: true });
-  cpSync(from, to, { recursive: true, dereference: true });
+  cpSync(path.join(root, src), path.join(funcDir, dest), { recursive: true, dereference: true });
   console.log(`vercel-postprocess: ${dest} -> server.func`);
 }
+
+const sharpVersion = JSON.parse(readFileSync(path.join(root, "node_modules/sharp/package.json"), "utf8")).version;
+const resvgVersion = JSON.parse(readFileSync(path.join(root, "node_modules/@resvg/resvg-js/package.json"), "utf8")).version;
+const staging = path.join(root, ".vercel/output/.linux-natives");
+rmSync(staging, { recursive: true, force: true });
+execSync(
+  `npm install --prefix ${JSON.stringify(staging)} --os=linux --cpu=arm64 --libc=glibc --no-audit --no-fund --no-save ` +
+    `sharp@${sharpVersion} @resvg/resvg-js@${resvgVersion}`,
+  { stdio: "inherit" },
+);
+
+const funcModules = path.join(funcDir, "node_modules");
+for (const dir of ["@img", "@resvg"]) rmSync(path.join(funcModules, dir), { recursive: true, force: true });
+for (const dir of ["@img", "@resvg"]) {
+  cpSync(path.join(staging, "node_modules", dir), path.join(funcModules, dir), { recursive: true, dereference: true });
+  console.log(`vercel-postprocess: linux binaries -> node_modules/${dir}`);
+}
+rmSync(staging, { recursive: true, force: true });
