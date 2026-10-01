@@ -4,7 +4,14 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, type Plugin } from "vite";
 import { isApiOwned, resolveRedirect } from "@aihot/contracts/http-policy";
 
-const API = new URL(process.env.API_BASE_URL || "http://127.0.0.1:3001");
+/** Only used by the dev middleware; computed lazily so a broken env can never break the build. */
+function apiTarget(): URL {
+  try {
+    return new URL(process.env.API_BASE_URL || "http://127.0.0.1:3001");
+  } catch {
+    return new URL("http://127.0.0.1:3001");
+  }
+}
 
 /** Development stand-in for the production web server: the shared redirect table and api-owned path routing. */
 function devEdge(): Plugin {
@@ -25,8 +32,9 @@ function devEdge(): Plugin {
           return res.end();
         }
         if (!isApiOwned(pathname)) return next();
+        const api = apiTarget();
         const upstream = httpRequest(
-          { hostname: API.hostname, port: API.port, path: raw, method: req.method, headers: req.headers },
+          { hostname: api.hostname, port: api.port, path: raw, method: req.method, headers: req.headers },
           (up) => {
             res.writeHead(up.statusCode ?? 502, up.headers);
             up.pipe(res);
