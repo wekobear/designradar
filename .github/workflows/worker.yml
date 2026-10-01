@@ -54,4 +54,7 @@ jobs:
         if: ${{ github.event.inputs.leaderboard == 'true' }}
         run: node scripts/lb-round.ts || true
       - name: Worker window
+        # pg-boss (node-postgres) cannot verify the pooler's CA chain; postgres.js (migrate/seed) can.
+        env:
+          DATABASE_URL: ${{ secrets.WORKER_DATABASE_URL }}
         run: timeout 300 node apps/worker/src/main.ts
