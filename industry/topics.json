@@ -1,0 +1,243 @@
+{
+  "exportedAt": "2026-10-01",
+  "groups": [
+    {
+      "key": "company",
+      "name": "公司与工具",
+      "blurb": "按厂商与工具追踪：设计工具谁在更新、模型谁在变强"
+    },
+    {
+      "key": "field",
+      "name": "方向",
+      "blurb": "按领域深挖：UI 生成、设计到代码、设计系统、可访问性……"
+    },
+    {
+      "key": "genre",
+      "name": "内容形态",
+      "blurb": "按内容类型浏览：评测榜单、教程、观点、论文……"
+    }
+  ],
+  "topics": [
+    {
+      "slug": "figma",
+      "name": "Figma",
+      "group": "company",
+      "entityId": "figma",
+      "tags": ["Figma", "entity:figma"],
+      "definition": "Figma 的全部动态：Figma Make、Dev Mode、FigJam、AI 功能与设计协作生态的持续追踪。",
+      "related": ["framer", "ui-generation", "design-systems"]
+    },
+    {
+      "slug": "framer",
+      "name": "Framer",
+      "group": "company",
+      "entityId": "framer",
+      "tags": ["Framer", "entity:framer"],
+      "definition": "Framer 的产品与 AI 功能动态：网页设计、发布工作流与 Workshop 的持续追踪。",
+      "related": ["figma", "webflow", "ui-generation"]
+    },
+    {
+      "slug": "sketch",
+      "name": "Sketch",
+      "group": "company",
+      "entityId": "sketch",
+      "tags": ["Sketch", "entity:sketch"],
+      "definition": "Sketch 的功能更新与 Mac 设计工作流动态。",
+      "related": ["figma", "design-systems"]
+    },
+    {
+      "slug": "adobe",
+      "name": "Adobe",
+      "group": "company",
+      "entityId": "adobe",
+      "tags": ["Adobe", "entity:adobe"],
+      "definition": "Adobe 的设计与 AI 动态：Photoshop、Illustrator、Firefly 生成式能力与创意工具生态。",
+      "related": ["canva", "image-generation", "figma"]
+    },
+    {
+      "slug": "canva",
+      "name": "Canva",
+      "group": "company",
+      "entityId": "canva",
+      "tags": ["Canva", "entity:canva"],
+      "definition": "Canva 与 Affinity 的产品更新与 AI 设计功能动态。",
+      "related": ["adobe", "figma"]
+    },
+    {
+      "slug": "webflow",
+      "name": "Webflow",
+      "group": "company",
+      "entityId": "webflow",
+      "tags": ["Webflow", "entity:webflow"],
+      "definition": "Webflow 的可视化网页开发与 AI 站点生成动态。",
+      "related": ["framer", "design-to-code"]
+    },
+    {
+      "slug": "openai",
+      "name": "OpenAI / ChatGPT",
+      "group": "company",
+      "entityId": "openai",
+      "tags": ["OpenAI", "entity:openai"],
+      "definition": "OpenAI 中与设计相关的能力与产品：模型的 UI 与视觉生成、ChatGPT Canvas、Sora 的设计侧动态。",
+      "related": ["anthropic", "google", "ui-generation"]
+    },
+    {
+      "slug": "anthropic",
+      "name": "Anthropic / Claude",
+      "group": "company",
+      "entityId": "anthropic",
+      "tags": ["Anthropic", "entity:anthropic"],
+      "definition": "Anthropic 中与设计相关的能力与产品：Claude 的前端与 UI 生成、Artifacts、设计工作流应用。",
+      "related": ["openai", "google", "design-to-code"]
+    },
+    {
+      "slug": "google",
+      "name": "Google / Gemini",
+      "group": "company",
+      "entityId": "google",
+      "tags": ["Google", "entity:google"],
+      "definition": "Google 中与设计相关的能力与产品：Gemini 的 UI 生成、Stitch、Material Design 与 web.dev 生态。",
+      "related": ["openai", "anthropic", "design-systems"]
+    },
+    {
+      "slug": "vercel-v0",
+      "name": "Vercel / v0",
+      "group": "company",
+      "entityId": "vercel",
+      "tags": ["Vercel", "entity:vercel"],
+      "definition": "Vercel 与 v0 的生成式 UI 与前端工程动态。",
+      "related": ["lovable", "design-to-code", "ui-generation"]
+    },
+    {
+      "slug": "lovable",
+      "name": "Lovable",
+      "group": "company",
+      "entityId": "lovable",
+      "tags": ["entity:lovable"],
+      "definition": "Lovable 的 AI 应用生成器产品与生态动态。",
+      "related": ["vercel-v0", "bolt", "ui-generation"]
+    },
+    {
+      "slug": "bolt",
+      "name": "Bolt / StackBlitz",
+      "group": "company",
+      "entityId": "stackblitz",
+      "tags": ["entity:stackblitz"],
+      "definition": "Bolt.new 与 StackBlitz 的 AI 网页与应用生成动态。",
+      "related": ["lovable", "vercel-v0"]
+    },
+    {
+      "slug": "lmarena",
+      "name": "LMArena",
+      "group": "company",
+      "entityId": "lmarena",
+      "tags": ["LMArena", "entity:lmarena"],
+      "definition": "LMArena 的公开评测动态：WebDev Arena 等真人盲选榜单的方法与成绩更新。",
+      "related": ["design-evals", "ui-generation"]
+    },
+    {
+      "slug": "ui-generation",
+      "name": "UI 生成",
+      "group": "field",
+      "tags": ["UI 生成"],
+      "definition": "从文字、草图或截图生成界面与设计稿：模型、工具、评测与工作流。",
+      "related": ["design-to-code", "design-evals", "figma"]
+    },
+    {
+      "slug": "design-to-code",
+      "name": "设计到代码",
+      "group": "field",
+      "tags": ["设计到代码", "编码"],
+      "definition": "设计稿转代码、截图转代码、AI 前端工程：从设计交付到真实界面的自动化。",
+      "related": ["ui-generation", "design-engineering", "vercel-v0"]
+    },
+    {
+      "slug": "design-systems",
+      "name": "设计系统",
+      "group": "field",
+      "tags": ["设计系统"],
+      "definition": "设计令牌、组件库、规范与治理：构建和维护设计系统的实践与工具。",
+      "related": ["design-engineering", "figma"]
+    },
+    {
+      "slug": "design-engineering",
+      "name": "设计工程",
+      "group": "field",
+      "tags": ["设计工程", "编码"],
+      "definition": "设计工程师的领域：原型、创意编码、动效实现与设计工具链。",
+      "related": ["design-to-code", "design-systems", "motion"]
+    },
+    {
+      "slug": "motion",
+      "name": "动效",
+      "group": "field",
+      "tags": ["动效"],
+      "definition": "界面动效、微交互与动画：工具、实现与 AI 生成动态。",
+      "related": ["design-engineering"]
+    },
+    {
+      "slug": "accessibility",
+      "name": "可访问性",
+      "group": "field",
+      "tags": ["可访问性"],
+      "definition": "无障碍设计、可访问性标准与工具，以及 AI 在其中的应用。",
+      "related": ["design-systems", "design-engineering"]
+    },
+    {
+      "slug": "image-generation",
+      "name": "图像生成",
+      "group": "field",
+      "tags": ["图像生成"],
+      "definition": "面向设计的图像生成：视觉稿、素材、插画与品牌视觉的 AI 生成能力与工具。",
+      "related": ["adobe", "ui-generation"]
+    },
+    {
+      "slug": "design-evals",
+      "name": "模型评测",
+      "group": "field",
+      "tags": ["评测/基准"],
+      "definition": "AI 模型在 UI、界面与视觉能力上的公开评测、榜单与方法讨论。",
+      "related": ["lmarena", "ui-generation"]
+    },
+    {
+      "slug": "benchmarks",
+      "name": "评测/基准",
+      "group": "genre",
+      "tags": ["评测/基准"],
+      "definition": "所有与设计能力评测、基准测试相关的内容。",
+      "related": ["design-evals"]
+    },
+    {
+      "slug": "tutorials",
+      "name": "教程/实践",
+      "group": "genre",
+      "tags": ["教程/实践"],
+      "definition": "可复用的设计教程、AI 设计工作流与实操经验。",
+      "related": ["ui-generation", "design-to-code"]
+    },
+    {
+      "slug": "opinions",
+      "name": "观点",
+      "group": "genre",
+      "tags": ["观点", "现象/趋势"],
+      "definition": "设计师与研究者对 AI 与设计未来的观点、评论与趋势讨论。",
+      "related": ["design-evals"]
+    },
+    {
+      "slug": "papers",
+      "name": "论文/研究",
+      "group": "genre",
+      "tags": ["论文/研究"],
+      "definition": "与 UI 生成、设计自动化、视觉理解相关的研究论文、基准与数据集。",
+      "related": ["design-evals", "ui-generation"]
+    },
+    {
+      "slug": "trends",
+      "name": "现象/趋势",
+      "group": "genre",
+      "tags": ["现象/趋势"],
+      "definition": "设计行业与 AI×设计的现象观察与趋势变化。",
+      "related": ["opinions"]
+    }
+  ]
+}

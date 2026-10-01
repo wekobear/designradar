@@ -1,0 +1,170 @@
+{
+  "$comment": "首批信源：首次启动时导入（scripts/seed.ts），已存在的不会被覆盖。之后在后台“信源”里增删改。字段说明见 docs/customize.md。Figma/Framer 等没有公开 RSS 的官方博客，上线后用后台“信源”页以 web_list 方式补充。",
+  "sources": [
+    {
+      "id": "rss-uisdc",
+      "name": "优设 UISDC",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.uisdc.com/feed",
+        "_aihot": { "initialBackfillLimit": 10 }
+      },
+      "tier": "T2",
+      "first_party": false,
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": ["设计媒体"],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-uxdesign-cc",
+      "name": "UX Collective",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://uxdesign.cc/feed",
+        "_aihot": { "initialBackfillLimit": 10 }
+      },
+      "tier": "T2",
+      "first_party": false,
+      "participation_mode": "editorial",
+      "interval_minutes": 90,
+      "tags": ["设计媒体"],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-smashingmagazine",
+      "name": "Smashing Magazine",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.smashingmagazine.com/feed/",
+        "_aihot": { "initialBackfillLimit": 10 }
+      },
+      "tier": "T2",
+      "first_party": false,
+      "participation_mode": "editorial",
+      "interval_minutes": 90,
+      "tags": ["设计媒体"],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-css-tricks",
+      "name": "CSS-Tricks",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://css-tricks.com/feed/",
+        "_aihot": { "initialBackfillLimit": 10 }
+      },
+      "tier": "T2",
+      "first_party": false,
+      "participation_mode": "editorial",
+      "interval_minutes": 90,
+      "tags": ["设计工程"],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-web-dev",
+      "name": "web.dev",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://web.dev/feed.xml",
+        "_aihot": { "initialBackfillLimit": 10 }
+      },
+      "tier": "T1_5",
+      "first_party": true,
+      "owner_entity_id": "google",
+      "participation_mode": "editorial",
+      "interval_minutes": 90,
+      "tags": ["官方", "设计工程"],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-chrome-dev",
+      "name": "Chrome for Developers",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://developer.chrome.com/feed.xml",
+        "_aihot": { "initialBackfillLimit": 10 }
+      },
+      "tier": "T1_5",
+      "first_party": true,
+      "owner_entity_id": "google",
+      "participation_mode": "editorial",
+      "interval_minutes": 90,
+      "tags": ["官方", "设计工程"],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-openai-news",
+      "name": "OpenAI News",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://openai.com/news/rss.xml",
+        "_aihot": { "initialBackfillLimit": 8 }
+      },
+      "tier": "T1",
+      "first_party": true,
+      "owner_entity_id": "openai",
+      "participation_mode": "editorial",
+      "interval_minutes": 90,
+      "tags": ["官方", "模型厂商"],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-google-blog",
+      "name": "Google Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://blog.google/rss/",
+        "_aihot": { "initialBackfillLimit": 8 }
+      },
+      "tier": "T1",
+      "first_party": true,
+      "owner_entity_id": "google",
+      "participation_mode": "editorial",
+      "interval_minutes": 90,
+      "tags": ["官方", "模型厂商"],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-deepmind",
+      "name": "Google DeepMind",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://deepmind.google/blog/rss.xml",
+        "_aihot": { "initialBackfillLimit": 8 }
+      },
+      "tier": "T1",
+      "first_party": true,
+      "owner_entity_id": "google",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": ["官方", "研究机构"],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-sspai",
+      "name": "少数派",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://sspai.com/feed",
+        "_aihot": { "initialBackfillLimit": 8 }
+      },
+      "tier": "T2",
+      "first_party": false,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": ["设计媒体", "数字生活"],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    }
+  ]
+}

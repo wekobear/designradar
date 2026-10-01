@@ -1,0 +1,57 @@
+name: worker
+
+# Vercel 上没有常驻进程：由 GitHub Actions 定时拉起 worker，跑满时间窗后优雅退出。
+# 框架的定时任务语义是“错过槽位补跑一次”，配合短窗口即可覆盖每天/每周/每月的任务。
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+    inputs:
+      seed:
+        description: "先运行 seed（导入信源与主题）"
+        type: boolean
+        default: false
+      leaderboard:
+        description: "先跑一轮榜单计算"
+        type: boolean
+        default: false
+
+concurrency:
+  group: worker
+  cancel-in-progress: false
+
+jobs:
+  worker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      NODE_ENV: production
+      AIHOT_ENVIRONMENT: production
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SITE_URL: ${{ secrets.SITE_URL }}
+      API_BASE_URL: ${{ secrets.API_BASE_URL }}
+      SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+      IMG_PROXY_SIGN_SECRET: ${{ secrets.IMG_PROXY_SIGN_SECRET }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+      LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+      LLM_MODEL: ${{ secrets.LLM_MODEL }}
+      LLM_EXTRA_JSON: ${{ secrets.LLM_EXTRA_JSON }}
+      AIHOT_DATA_DIR: /tmp/aihot-data
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Migrate
+        run: node scripts/migrate.ts
+      - name: Seed
+        if: ${{ github.event.inputs.seed == 'true' }}
+        run: node scripts/seed.ts
+      - name: Leaderboard round
+        if: ${{ github.event.inputs.leaderboard == 'true' }}
+        run: node scripts/lb-round.ts || true
+      - name: Worker window
+        run: timeout 300 node apps/worker/src/main.ts
