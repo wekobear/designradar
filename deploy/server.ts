@@ -18,6 +18,23 @@ assertProductionSecrets([
 const app = await buildApp();
 await app.ready();
 
+// Vercel rewrites append the captured path as a `?path=` query parameter; the public v1 API
+// validates its query with a strict schema and would reject the injected parameter.
+function stripInjectedParams(req: IncomingMessage): void {
+  const raw = req.url ?? "/";
+  if (!raw.includes("path=")) return;
+  try {
+    const url = new URL(raw, "http://internal");
+    if (url.searchParams.has("path")) {
+      url.searchParams.delete("path");
+      req.url = `${url.pathname}${url.search}`;
+    }
+  } catch {
+    // Malformed URL: let the API's own handler produce the problem response.
+  }
+}
+
 export default function handler(req: IncomingMessage, res: ServerResponse): void {
+  stripInjectedParams(req);
   app.routing(req, res);
 }
