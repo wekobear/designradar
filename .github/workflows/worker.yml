@@ -56,5 +56,5 @@ jobs:
       - name: Worker window
         # pg-boss (node-postgres) cannot verify the pooler's CA chain; postgres.js ignores it.
         env:
-          PGSSL_NO_VERIFY: "true"
+          NODE_TLS_REJECT_UNAUTHORIZED: "0"
         run: timeout 300 node apps/worker/src/main.ts
