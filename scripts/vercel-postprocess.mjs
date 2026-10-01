@@ -17,6 +17,8 @@ if (!existsSync(funcDir)) throw new Error("vercel-postprocess: run `vercel build
 for (const [src, dest] of [
   ["industry", "industry"],
   ["assets/og-fonts", "assets/og-fonts"],
+  ["database/seeds", "database/seeds"],
+  ["reference", "reference"],
   ["node_modules/harfbuzzjs", "node_modules/harfbuzzjs"],
 ]) {
   cpSync(path.join(root, src), path.join(funcDir, dest), { recursive: true, dereference: true });
