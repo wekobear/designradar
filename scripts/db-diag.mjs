@@ -1,31 +1,28 @@
 // One-off DB diagnostic: compare pooled (transaction, 6543, prepare:false) vs session (5432)
-// connections running the site queries that hang inside the Vercel function.
-import postgres from "postgres";
-import { readFileSync } from "node:fs";
-
-const envUrl = process.env.DATABASE_URL!;
-const pooled = /sslmode=require&pgbouncer=true/.test(envUrl) ? envUrl : envUrl.replace(":5432/", ":6543/").replace("sslmode=require", "sslmode=require&pgbouncer=true").replace("postgres.aivdomtumarcswubinmn", "postgres.aivdomtumarcswubinmn");
-const session = envUrl.replace(":6543/", ":5432/").replace("&pgbouncer=true", "");
-
-async function trial(label: string, url: string, opts: Record<string, unknown>, run: (sql: any) => Promise<unknown>) {
-  const sql = postgres(url, { connect_timeout: 15, idle_timeout: 3, max: 1, ...opts } as never);
+// connections running the site queries that hang inside the Vercel function. Each trial re-imports
+// the backend modules with a cache-busting query so config.databaseUrl is read fresh per trial.
+let n = 0;
+async function trial(label, env, run) {
+  process.env.DATABASE_URL = env.url;
+  process.env.DATABASE_PREPARE = env.prepare;
+  process.env.DATABASE_POOL_MAX = "1";
+  const v = `t${n++}`;
   const t = Date.now();
   try {
-    const r = await run(sql);
-    console.log(label, Date.now() - t + "ms OK", JSON.stringify(r)?.slice(0, 120));
+    const stats = await import(`../packages/backend/src/site/stats.ts?${v}`);
+    const r = await Promise.race([
+      stats.loadSiteStats().then((s) => `sources=${s.sources}`),
+      new Promise((_, rej) => setTimeout(() => rej(new Error("TIMEOUT 20s")), 20_000)),
+    ]);
+    console.log(label, Date.now() - t + "ms OK", r);
   } catch (e) {
-    console.log(label, "FAIL", Date.now() - t + "ms", (e as { code?: string }).code || "", (e as Error).message?.slice(0, 120));
+    console.log(label, "FAIL", Date.now() - t + "ms", e.code || "", e.message?.slice(0, 100));
   }
-  await sql.end({ timeout: 2 }).catch(() => {});
 }
-
-const stats = (sql: never) => import("../packages/backend/src/site/stats.ts").then(async (m) => {
-  // stats caches per process; call the raw query path through a fresh module each time
-  return (await (m as { loadSiteStats(): Promise<{ sources: number }> }).loadSiteStats()).sources;
-});
-const timeline = (sql: never) => import("../packages/backend/src/publication/timeline.ts").then((m) => m.loadTimeline({ limit: 5 }).then((r: { cards?: unknown[] }) => r.cards?.length ?? 0));
-
-await trial("A pooled+prepareFalse stats", pooled, { prepare: false }, stats as never);
-await trial("B pooled+prepareFalse timeline", pooled, { prepare: false }, timeline as never);
-await trial("C session+prepareTrue stats", session, {}, stats as never);
-await trial("D session+prepareTrue timeline", session, {}, timeline as never);
+const envUrl = process.env.DATABASE_URL;
+const pooled = /6543/.test(envUrl) ? envUrl : envUrl.replace(":5432/", ":6543/") + (envUrl.includes("?") ? "&pgbouncer=true" : "?sslmode=require&pgbouncer=true");
+const session = envUrl.replace(":6543/", ":5432/").replace("&pgbouncer=true", "");
+console.log("pooled:", /6543/.test(pooled), "session:", !/6543/.test(session));
+await trial("A pooled prepare=false", { url: pooled, prepare: "false" });
+await trial("B pooled prepare default", { url: pooled, prepare: undefined });
+await trial("C session", { url: session, prepare: undefined });
