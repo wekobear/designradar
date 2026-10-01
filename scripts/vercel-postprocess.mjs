@@ -27,16 +27,19 @@ const sharpVersion = JSON.parse(readFileSync(path.join(root, "node_modules/sharp
 const resvgVersion = JSON.parse(readFileSync(path.join(root, "node_modules/@resvg/resvg-js/package.json"), "utf8")).version;
 const staging = path.join(root, ".vercel/output/.linux-natives");
 rmSync(staging, { recursive: true, force: true });
-execSync(
-  `npm install --prefix ${JSON.stringify(staging)} --os=linux --cpu=arm64 --libc=glibc --no-audit --no-fund --no-save ` +
-    `sharp@${sharpVersion} @resvg/resvg-js@${resvgVersion}`,
-  { stdio: "inherit" },
-);
+// Functions may run on x64 or arm64 Lambdas; install the Linux (glibc) builds of both architectures.
+for (const cpu of ["x64", "arm64"]) {
+  execSync(
+    `npm install --prefix ${JSON.stringify(staging)} --os=linux --cpu=${cpu} --libc=glibc --no-audit --no-fund --no-save ` +
+      `sharp@${sharpVersion} @resvg/resvg-js@${resvgVersion}`,
+    { stdio: "inherit" },
+  );
+}
 
 const funcModules = path.join(funcDir, "node_modules");
 for (const dir of ["@img", "@resvg"]) rmSync(path.join(funcModules, dir), { recursive: true, force: true });
 for (const dir of ["@img", "@resvg"]) {
   cpSync(path.join(staging, "node_modules", dir), path.join(funcModules, dir), { recursive: true, dereference: true });
-  console.log(`vercel-postprocess: linux binaries -> node_modules/${dir}`);
+  console.log(`vercel-postprocess: linux binaries (x64+arm64) -> node_modules/${dir}`);
 }
 rmSync(staging, { recursive: true, force: true });
