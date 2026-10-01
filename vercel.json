@@ -1,16 +1,16 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "npm install",
-  "buildCommand": "npm run build -w @aihot/web && node scripts/vercel-prepare.mjs",
+  "buildCommand": "npm run build -w @aihot/web && node scripts/vercel-bundles.mjs",
   "outputDirectory": "apps/web/build/client",
   "trailingSlash": false,
   "functions": {
-    "api/ssr.ts": {
+    "api/ssr.mjs": {
       "maxDuration": 30
     },
-    "api/server.ts": {
+    "api/server.mjs": {
       "maxDuration": 60,
-      "includeFiles": "assets/og-fonts/**"
+      "includeFiles": "assets/og-fonts/**, industry/**"
     }
   },
   "redirects": [
