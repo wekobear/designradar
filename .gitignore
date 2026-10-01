@@ -17,3 +17,14 @@ fontsource-noto-sans-sc-*.tgz
 
 # Vercel
 .vercel/
+.vercel
+.env*
+!.env.example
+api/*.mjs
+api/*.js
+.db-urls.local
+
+# Supabase integration auto-installed agent skills
+.agents/
+.claude/
+skills-lock.json
