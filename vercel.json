@@ -9,8 +9,7 @@
       "maxDuration": 30
     },
     "api/server.mjs": {
-      "maxDuration": 60,
-      "includeFiles": "assets/og-fonts/**,industry/**,node_modules/harfbuzzjs/**"
+      "maxDuration": 60
     }
   },
   "redirects": [

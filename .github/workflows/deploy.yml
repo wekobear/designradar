@@ -1,0 +1,39 @@
+name: deploy
+
+# Builds and deploys the site to Vercel on every push to main.
+# `vercel build` + prebuilt deploy (not the Vercel-side git build) because the API function needs a
+# post-build step: functions.includeFiles is ignored for this project, so
+# scripts/vercel-postprocess.mjs copies the runtime files (industry/, fonts, harfbuzzjs) into the
+# function output before deployment.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      VERCEL_ORG_ID: team_7LrxFdSXpJumbkF2J6AIqieh
+      VERCEL_PROJECT_ID: prj_cDBEnomQUZNeJuo5p1VdnZ6IHsU5
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Pull project settings
+        run: npx vercel pull --yes --environment=production
+      - name: Build (web + serverless bundles + static output)
+        run: npx vercel build --prod
+      - name: Post-process function output
+        run: node scripts/vercel-postprocess.mjs
+      - name: Deploy to production
+        run: npx vercel deploy --prebuilt --prod --yes
