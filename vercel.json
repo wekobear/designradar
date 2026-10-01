@@ -10,7 +10,7 @@
     },
     "api/server.mjs": {
       "maxDuration": 60,
-      "includeFiles": "assets/og-fonts/**, industry/**"
+      "includeFiles": "assets/og-fonts/**,industry/**,node_modules/harfbuzzjs/**"
     }
   },
   "redirects": [
