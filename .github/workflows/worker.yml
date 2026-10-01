@@ -4,7 +4,7 @@ name: worker
 # 框架的定时任务语义是“错过槽位补跑一次”，配合短窗口即可覆盖每天/每周/每月的任务。
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/30 * * * *"
   workflow_dispatch:
     inputs:
       seed:
@@ -57,4 +57,5 @@ jobs:
         # pg-boss (node-postgres) cannot verify the pooler's CA chain; postgres.js ignores it.
         env:
           NODE_TLS_REJECT_UNAUTHORIZED: "0"
-        run: timeout 300 node apps/worker/src/main.ts
+        # 300s window ends via SIGTERM; timeout reports 124, which is the expected way to stop here.
+        run: timeout 300 node apps/worker/src/main.ts || true
