@@ -52652,7 +52652,7 @@ function SectionPage({ id: id3, no, label, children }) {
   });
 }
 function Neighbours({ report, index }) {
-  const titleOf = (key) => index.find((e) => e.key === key)?.title ?? `AI ${KIND_LABEL$1[report.kind]} \xB7 ${key}`;
+  const titleOf = (key) => index.find((e) => e.key === key)?.title ?? `${withSubject(KIND_LABEL$1[report.kind])} \xB7 ${key}`;
   const cell = "group flex min-w-0 flex-col py-6";
   const title = "mt-2.5 line-clamp-2 text-[16px] font-bold leading-[1.5] text-ink transition-colors group-hover:text-accent @[880px]:text-[18px]";
   return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("nav", {
@@ -52826,7 +52826,7 @@ async function loader$28({ request }) {
 function meta$33({ loaderData, location: location2 }) {
   const kind = loaderData?.kind ?? "daily";
   return pageMeta({
-    title: `AI ${KIND_LABEL$1[kind]}`,
+    title: withSubject(KIND_LABEL$1[kind]),
     description: kind === "daily" ? `${SITE.name} \u6BCF\u5929 08:00\uFF08\u5317\u4EAC\u65F6\u95F4\uFF09\u53D1\u5E03\u7684${withSubject("\u65E5\u62A5")}\u3002` : kind === "weekly" ? "\u6BCF\u5468\u7EFC\u5408\u56DE\u987E\u3002" : "\u6BCF\u6708\u76D8\u70B9\u3002",
     path: location2.pathname,
     image: `/og/pages/${kind}.png`
@@ -59928,7 +59928,7 @@ var init_server4 = __esm({
           report,
           index
         }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(EmptyState, {
-          title: `\u8FD8\u6CA1\u6709\u53D1\u5E03 AI ${KIND_LABEL$1[kind]}`,
+          title: `\u8FD8\u6CA1\u6709\u53D1\u5E03${withSubject(KIND_LABEL$1[kind])}`,
           children: "\u7B2C\u4E00\u671F\u53D1\u5E03\u540E\u4F1A\u51FA\u73B0\u5728\u8FD9\u91CC\u3002"
         })
       });
@@ -66933,11 +66933,11 @@ var init_server4 = __esm({
           "hasClientMiddleware": false,
           "hasDefaultExport": true,
           "hasErrorBoundary": false,
-          "module": "/assets/report-latest-0qJVvIur.js",
+          "module": "/assets/report-latest-DVqTCehH.js",
           "imports": [
             "/assets/entry.client-6tyZgf_X.js",
             "/assets/shared-CpJqV6t3.js",
-            "/assets/ReportPaper-C1LYFH1V.js"
+            "/assets/ReportPaper-Dgbt8LoM.js"
           ],
           "css": [],
           "clientActionModule": void 0,
@@ -66958,11 +66958,11 @@ var init_server4 = __esm({
           "hasClientMiddleware": false,
           "hasDefaultExport": true,
           "hasErrorBoundary": false,
-          "module": "/assets/daily-archive-Dbj0Nic4.js",
+          "module": "/assets/daily-archive-DNOXLFYd.js",
           "imports": [
             "/assets/entry.client-6tyZgf_X.js",
             "/assets/shared-CpJqV6t3.js",
-            "/assets/ReportPaper-C1LYFH1V.js"
+            "/assets/ReportPaper-Dgbt8LoM.js"
           ],
           "css": [],
           "clientActionModule": void 0,
@@ -66983,11 +66983,11 @@ var init_server4 = __esm({
           "hasClientMiddleware": false,
           "hasDefaultExport": true,
           "hasErrorBoundary": false,
-          "module": "/assets/report-detail-Bt86YezI.js",
+          "module": "/assets/report-detail-Bi6rSPmB.js",
           "imports": [
             "/assets/entry.client-6tyZgf_X.js",
             "/assets/shared-CpJqV6t3.js",
-            "/assets/ReportPaper-C1LYFH1V.js"
+            "/assets/ReportPaper-Dgbt8LoM.js"
           ],
           "css": [],
           "clientActionModule": void 0,
@@ -67008,11 +67008,11 @@ var init_server4 = __esm({
           "hasClientMiddleware": false,
           "hasDefaultExport": true,
           "hasErrorBoundary": false,
-          "module": "/assets/report-latest-0qJVvIur.js",
+          "module": "/assets/report-latest-DVqTCehH.js",
           "imports": [
             "/assets/entry.client-6tyZgf_X.js",
             "/assets/shared-CpJqV6t3.js",
-            "/assets/ReportPaper-C1LYFH1V.js"
+            "/assets/ReportPaper-Dgbt8LoM.js"
           ],
           "css": [],
           "clientActionModule": void 0,
@@ -67033,11 +67033,11 @@ var init_server4 = __esm({
           "hasClientMiddleware": false,
           "hasDefaultExport": true,
           "hasErrorBoundary": false,
-          "module": "/assets/report-detail-Bt86YezI.js",
+          "module": "/assets/report-detail-Bi6rSPmB.js",
           "imports": [
             "/assets/entry.client-6tyZgf_X.js",
             "/assets/shared-CpJqV6t3.js",
-            "/assets/ReportPaper-C1LYFH1V.js"
+            "/assets/ReportPaper-Dgbt8LoM.js"
           ],
           "css": [],
           "clientActionModule": void 0,
@@ -67058,11 +67058,11 @@ var init_server4 = __esm({
           "hasClientMiddleware": false,
           "hasDefaultExport": true,
           "hasErrorBoundary": false,
-          "module": "/assets/report-latest-0qJVvIur.js",
+          "module": "/assets/report-latest-DVqTCehH.js",
           "imports": [
             "/assets/entry.client-6tyZgf_X.js",
             "/assets/shared-CpJqV6t3.js",
-            "/assets/ReportPaper-C1LYFH1V.js"
+            "/assets/ReportPaper-Dgbt8LoM.js"
           ],
           "css": [],
           "clientActionModule": void 0,
@@ -67083,11 +67083,11 @@ var init_server4 = __esm({
           "hasClientMiddleware": false,
           "hasDefaultExport": true,
           "hasErrorBoundary": false,
-          "module": "/assets/report-detail-Bt86YezI.js",
+          "module": "/assets/report-detail-Bi6rSPmB.js",
           "imports": [
             "/assets/entry.client-6tyZgf_X.js",
             "/assets/shared-CpJqV6t3.js",
-            "/assets/ReportPaper-C1LYFH1V.js"
+            "/assets/ReportPaper-Dgbt8LoM.js"
           ],
           "css": [],
           "clientActionModule": void 0,
@@ -67998,8 +67998,8 @@ var init_server4 = __esm({
           "hydrateFallbackModule": void 0
         }
       },
-      "url": "/assets/manifest-0e48f569.js",
-      "version": "0e48f569",
+      "url": "/assets/manifest-7c6c12f4.js",
+      "version": "7c6c12f4",
       "sri": void 0
     };
     assetsBuildDirectory = "build/client";

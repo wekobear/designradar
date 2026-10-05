@@ -5,12 +5,7 @@
 // initialises, so the config import has to happen after the assignment (hence dynamic imports).
 import path from "node:path";
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { installEmbeddedFs } from "./embedded-fs.mjs";
-
 process.env.AIHOT_REPO_ROOT = path.resolve(import.meta.dirname, "..");
-// Serve prompts, brand assets, fonts, the OpenAPI spec, leaderboard seeds and harfbuzzjs wasm from
-// the bundle (see embedded-fs.mjs) — before anything reads them from disk.
-installEmbeddedFs(process.env.AIHOT_REPO_ROOT);
 const { assertProductionSecrets } = await import("@aihot/backend/config");
 const { buildApp } = await import("../apps/api/src/app.ts");
 
