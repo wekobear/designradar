@@ -11,14 +11,14 @@ AI 模型 UI 设计评测 + 设计行业每日精选。
 
 基于开源框架 [AIHOT](https://github.com/KKKKhazix/AIHOT)（MIT）的行业包定制：站名、分类、信源、精选提示词都在 [`industry/`](industry/)，框架代码见原仓库与 `docs/`。
 
-部署在 Vercel + Neon（本仓库 `vercel.json`）：
+部署在 Vercel + Supabase（本仓库 `vercel.json`），GitHub 与 Vercel 关联，push 到 main 自动部署：
 
 | 部分 | 运行位置 | 说明 |
 |---|---|---|
-| Web（React Router 8 SSR） | Vercel Function `api/ssr.ts` | 静态资源走部署文件系统；api-owned 路径 rewrite 到 `api/server.ts` |
-| API（Fastify） | Vercel Function `api/server.ts` | SSR、RSS、OG 图、公开 API、MCP 同源同域 |
-| Worker（抓取/评分/聚簇/日报） | GitHub Actions 定时 | `*/5` 分钟拉起一次，跑满窗口自动退出；迁移与种子同流程 |
-| PostgreSQL | Neon | API 用 pooled 连接（`DATABASE_PREPARE=false`、`DATABASE_POOL_MAX=1`），worker 用直连 |
+| Web（React Router 8 SSR） | Vercel Function `api/ssr.mjs` | 静态资源走部署文件系统；api-owned 路径 rewrite 到 `api/server.mjs` |
+| API（Fastify） | Vercel Function `api/server.mjs` | SSR、RSS、OG 图、公开 API、MCP 同源同域；运行时文件内嵌进 bundle（`deploy/embedded-fs.mjs`） |
+| Worker（抓取/评分/聚簇/日报） | GitHub Actions 定时 | 每 30 分钟拉起一次 5 分钟窗口，跑满自动退出；迁移与种子同流程（手动 dispatch 可带 seed/leaderboard） |
+| PostgreSQL | Supabase | API 与 worker 都走 session pooler；worker 需 `NODE_TLS_REJECT_UNAUTHORIZED=0`（pooler 私有 CA） |
 
 ## 本地开发
 
