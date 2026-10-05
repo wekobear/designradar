@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "npm install",
-  "buildCommand": "npm run build -w @aihot/web && node scripts/vercel-bundles.mjs",
+  "buildCommand": "npm run build -w @aihot/web",
   "outputDirectory": "apps/web/build/client",
   "trailingSlash": false,
   "functions": {

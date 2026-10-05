@@ -3,9 +3,10 @@
 // unbundled entries crash with ERR_MODULE_NOT_FOUND, and the tracer's dependency install step
 // recreates workspace symlinks even after a prepare step. Bundling pulls every workspace source
 // into the output; only native modules stay external (traced and installed from the registry).
-// The outputs are committed so `functions` patterns validate, and the remote buildCommand
-// regenerates them fresh on every deploy. Requires apps/web/build (run the web build first).
-// Run locally before committing backend/industry changes: node scripts/vercel-bundles.mjs
+// The outputs are COMMITTED — Vercel's remote builder compiles functions from the uploaded
+// sources (buildCommand outputs are ignored), so the committed api/server.mjs is exactly what
+// runs. Run this before every commit that touches backend, industry, fonts or seeds:
+//   node scripts/vercel-bundles.mjs
 import { build } from "esbuild";
 import { readdirSync, readFileSync, statSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
